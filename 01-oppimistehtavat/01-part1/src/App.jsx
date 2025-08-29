@@ -33,6 +33,7 @@ const App = () => {
         <p>{counter}</p>
         <button onClick={() => setCounter(counter + 1)}>1</button>
         <button onClick={() => setCounter(0)}>C</button>
+        <button onClick={() => setCounter(counter - 1)}>-1</button>
       </div>
 
       <hr />
