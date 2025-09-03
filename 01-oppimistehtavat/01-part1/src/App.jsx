@@ -174,8 +174,8 @@ const App = () => {
           <button onClick={() => handleCalcClick("-")}>-</button>
 
           {/* Row 4 */}
-          <button onClick={() => handleCalcClick("0")}>0</button>
           <button onClick={() => handleCalcClick(".")}>.</button>
+          <button onClick={() => handleCalcClick("0")}>0</button>
           {/* Removed Clear and Plus buttons from here */}
           <button
             className="back"
