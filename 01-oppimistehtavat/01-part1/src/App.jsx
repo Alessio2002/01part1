@@ -25,8 +25,9 @@ const App = () => {
         .replace(/tan/g, "Math.tan")
         .replace(/log/g, "Math.log")
         .replace(/√/g, "Math.sqrt")
-        .replace(/\^/g, "**")
-        .replace(/(\d+)%/g, "($1/100)");
+        .replace(/\^/g, "**");
+
+      expression = parsePercentages(expression);
 
       const result = eval(expression);
       setCalcInput(String(result));
@@ -34,6 +35,17 @@ const App = () => {
     } catch {
       setCalcInput("Error");
     }
+  };
+
+  const parsePercentages = (expr) => {
+    return expr
+      .replace(
+        /(\d+)([\+\-\*\/])\s*(\d+)%/g,
+        (match, base, operator, percent) => {
+          return `${base}${operator}(${base}*${percent}/100)`;
+        }
+      )
+      .replace(/(\d+)%/g, "($1/100)");
   };
 
   // General rounding to decimals (optional)
