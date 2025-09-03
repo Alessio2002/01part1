@@ -35,48 +35,7 @@ const App = () => {
     }
   };
 
-  // Keep the integer rounding function if you want
-  const handleRoundInteger = () => {
-    try {
-      const currentNumber = Number(calcInput);
-
-      if (!isNaN(currentNumber)) {
-        const rounded = Math.round(currentNumber);
-        setCalcInput(String(rounded));
-        setHistory((prev) => [
-          ...prev,
-          { expression: `roundInt(${calcInput})`, result: rounded },
-        ]);
-      } else {
-        let expression = calcInput
-          .replace(/PI/g, "Math.PI")
-          .replace(/E/g, "Math.E")
-          .replace(/sin/g, "Math.sin")
-          .replace(/cos/g, "Math.cos")
-          .replace(/tan/g, "Math.tan")
-          .replace(/log/g, "Math.log")
-          .replace(/√/g, "Math.sqrt")
-          .replace(/\^/g, "**");
-
-        const evaluated = eval(expression);
-
-        if (typeof evaluated === "number" && !isNaN(evaluated)) {
-          const rounded = Math.round(evaluated);
-          setCalcInput(String(rounded));
-          setHistory((prev) => [
-            ...prev,
-            { expression: `roundInt(${calcInput})`, result: rounded },
-          ]);
-        } else {
-          setCalcInput("Error");
-        }
-      }
-    } catch {
-      setCalcInput("Error");
-    }
-  };
-
-  // Updated: Round to any number of decimals (default 5)
+  // General rounding to decimals (optional)
   const handleRoundDecimals = (decimals = 5) => {
     try {
       const currentNumber = Number(calcInput);
@@ -113,6 +72,62 @@ const App = () => {
         } else {
           setCalcInput("Error");
         }
+      }
+    } catch {
+      setCalcInput("Error");
+    }
+  };
+
+  // Helper for custom rounding based on second decimal digit
+  const customRoundNearestDecimal = (num) => {
+    // Format to 2 decimals string for inspection
+    const str = num.toFixed(2);
+    const [, decPart] = str.split(".");
+
+    // Extract second decimal digit
+    const secondDecDigit = Number(decPart[1]);
+
+    if (secondDecDigit > 5) {
+      // Round UP to nearest 0.1
+      return Math.ceil(num * 10) / 10;
+    } else if (secondDecDigit === 5) {
+      // Keep as is
+      return Number(str);
+    } else {
+      // Round DOWN to nearest 0.1
+      return Math.floor(num * 10) / 10;
+    }
+  };
+
+  // Custom rounding handler for the (nearest decimal) button
+  const handleRoundCustom = () => {
+    try {
+      let expression = calcInput
+        .replace(/PI/g, "Math.PI")
+        .replace(/E/g, "Math.E")
+        .replace(/sin/g, "Math.sin")
+        .replace(/cos/g, "Math.cos")
+        .replace(/tan/g, "Math.tan")
+        .replace(/log/g, "Math.log")
+        .replace(/√/g, "Math.sqrt")
+        .replace(/\^/g, "**");
+
+      const evaluated = eval(expression);
+
+      if (typeof evaluated === "number" && !isNaN(evaluated)) {
+        const rounded = customRoundNearestDecimal(evaluated);
+
+        // Format nicely: no trailing decimals if integer, else 2 decimals
+        const formatted =
+          rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(2);
+
+        setCalcInput(formatted);
+        setHistory((prev) => [
+          ...prev,
+          { expression: `customRound(${calcInput})`, result: formatted },
+        ]);
+      } else {
+        setCalcInput("Error");
       }
     } catch {
       setCalcInput("Error");
@@ -181,8 +196,8 @@ const App = () => {
             ←
           </button>
 
-          {/* Round to 1 decimal place */}
-          <button className="round" onClick={() => handleRoundDecimals(1)}>
+          {/* Round to nearest decimal with custom rounding */}
+          <button className="round" onClick={handleRoundCustom}>
             (nearest decimal)
           </button>
 
