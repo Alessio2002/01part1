@@ -80,26 +80,20 @@ const App = () => {
 
   // Helper for custom rounding based on second decimal digit
   const customRoundNearestDecimal = (num) => {
-    // Format to 2 decimals string for inspection
     const str = num.toFixed(2);
     const [, decPart] = str.split(".");
-
-    // Extract second decimal digit
     const secondDecDigit = Number(decPart[1]);
 
     if (secondDecDigit > 5) {
-      // Round UP to nearest 0.1
       return Math.ceil(num * 10) / 10;
     } else if (secondDecDigit === 5) {
-      // Keep as is
       return Number(str);
     } else {
-      // Round DOWN to nearest 0.1
       return Math.floor(num * 10) / 10;
     }
   };
 
-  // Custom rounding handler for the (nearest decimal) button
+  // Custom rounding handler
   const handleRoundCustom = () => {
     try {
       let expression = calcInput
@@ -117,7 +111,6 @@ const App = () => {
       if (typeof evaluated === "number" && !isNaN(evaluated)) {
         const rounded = customRoundNearestDecimal(evaluated);
 
-        // Format nicely: no trailing decimals if integer, else 2 decimals
         const formatted =
           rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(2);
 
@@ -183,12 +176,7 @@ const App = () => {
           {/* Row 4 */}
           <button onClick={() => handleCalcClick("0")}>0</button>
           <button onClick={() => handleCalcClick(".")}>.</button>
-          <button onClick={handleCalcClear}>C</button>
-          <button className="plus" onClick={() => handleCalcClick("+")}>
-            +
-          </button>
-
-          {/* Row 5 */}
+          {/* Removed Clear and Plus buttons from here */}
           <button
             className="back"
             onClick={() => setCalcInput(calcInput.slice(0, -1))}
@@ -196,25 +184,31 @@ const App = () => {
             ←
           </button>
 
-          {/* Round to nearest decimal with custom rounding */}
+          {/* Round buttons */}
           <button className="round" onClick={handleRoundCustom}>
             (nearest decimal)
           </button>
-
-          {/* Round to 5 decimals */}
           <button className="round-5" onClick={() => handleRoundDecimals(5)}>
             ≈
           </button>
-
           <button className="equal" onClick={handleCalcEvaluate}>
             =
+          </button>
+        </div>
+
+        {/* Moved Clear and Plus buttons here */}
+        <div className="special-buttons">
+          <button className="clear" onClick={handleCalcClear}>
+            C
+          </button>
+          <button className="plus" onClick={() => handleCalcClick("+")}>
+            +
           </button>
         </div>
 
         {/* Extra controls */}
         <h1>Extra controls</h1>
         <div className="extra-buttons">
-          {/* +/- toggle button */}
           <button
             className="func"
             onClick={() => {
@@ -227,7 +221,6 @@ const App = () => {
           >
             +/-
           </button>
-
           <button className="func" onClick={() => handleCalcClick("(")}>
             (
           </button>
@@ -264,7 +257,7 @@ const App = () => {
         </div>
       </div>
 
-      {/* Button to toggle history tab */}
+      {/* History toggle */}
       <button
         className="toggle-history"
         onClick={() => setShowHistory(!showHistory)}
