@@ -35,13 +35,13 @@ const App = () => {
     }
   };
 
+  // Keep the integer rounding function if you want
   const handleRoundInteger = () => {
     try {
-      const roundToInteger = (num) => Math.round(num);
       const currentNumber = Number(calcInput);
 
       if (!isNaN(currentNumber)) {
-        const rounded = roundToInteger(currentNumber);
+        const rounded = Math.round(currentNumber);
         setCalcInput(String(rounded));
         setHistory((prev) => [
           ...prev,
@@ -61,7 +61,7 @@ const App = () => {
         const evaluated = eval(expression);
 
         if (typeof evaluated === "number" && !isNaN(evaluated)) {
-          const rounded = roundToInteger(evaluated);
+          const rounded = Math.round(evaluated);
           setCalcInput(String(rounded));
           setHistory((prev) => [
             ...prev,
@@ -76,17 +76,14 @@ const App = () => {
     }
   };
 
+  // Updated: Round to any number of decimals (default 5)
   const handleRoundDecimals = (decimals = 5) => {
     try {
-      const roundToDecimals = (num, decimals) => {
-        const factor = 10 ** decimals;
-        return Math.round(num * factor) / factor;
-      };
-
       const currentNumber = Number(calcInput);
 
       if (!isNaN(currentNumber)) {
-        const rounded = roundToDecimals(currentNumber, decimals);
+        const factor = 10 ** decimals;
+        const rounded = Math.round(currentNumber * factor) / factor;
         setCalcInput(String(rounded));
         setHistory((prev) => [
           ...prev,
@@ -106,7 +103,8 @@ const App = () => {
         const evaluated = eval(expression);
 
         if (typeof evaluated === "number" && !isNaN(evaluated)) {
-          const rounded = roundToDecimals(evaluated, decimals);
+          const factor = 10 ** decimals;
+          const rounded = Math.round(evaluated * factor) / factor;
           setCalcInput(String(rounded));
           setHistory((prev) => [
             ...prev,
@@ -137,7 +135,17 @@ const App = () => {
       {/* Calculator */}
       <h1>Calculator</h1>
       <div className="calculator">
-        <div className="display">{calcInput || "0"}</div>
+        <input
+          className="display"
+          type="text"
+          value={calcInput}
+          onChange={(e) => setCalcInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleCalcEvaluate();
+          }}
+          placeholder="0"
+        />
+
         <div className="buttons">
           {/* Row 1 */}
           <button onClick={() => handleCalcClick("1")}>1</button>
@@ -173,12 +181,14 @@ const App = () => {
             ←
           </button>
 
-          <button className="round" onClick={handleRoundInteger}>
-            ≈ (nearest decimal)
+          {/* Round to 1 decimal place */}
+          <button className="round" onClick={() => handleRoundDecimals(1)}>
+            (nearest decimal)
           </button>
 
+          {/* Round to 5 decimals */}
           <button className="round-5" onClick={() => handleRoundDecimals(5)}>
-            ≈ (5 decimals)
+            ≈
           </button>
 
           <button className="equal" onClick={handleCalcEvaluate}>

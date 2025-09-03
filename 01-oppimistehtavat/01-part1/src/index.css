@@ -244,11 +244,16 @@ div {
   grid-column: 3 / 5;
   grid-row: 5;
 }
-
-.buttons .round,
 .buttons .round-5 {
+  font-size: 1.5rem;
+  padding: 0;
+  font-weight: bold;
+}
+
+.buttons .round {
   font-size: 1rem;
   padding: 0;
+  font-weight: bold;
 }
 
 .history-tab ul {
