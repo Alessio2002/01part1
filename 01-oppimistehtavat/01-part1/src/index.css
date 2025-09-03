@@ -90,12 +90,24 @@ html,
 }
 
 /* ROUNDING BUTTONS */
-.buttons .round,
 .buttons .round-5 {
   background-color: #eee;
   color: rgb(0, 0, 0);
   border-radius: 6px;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+  padding: 0;
+  width: 100%;
+}
+.buttons .round {
+  background-color: #eee;
+  color: rgb(0, 0, 0);
+  border-radius: 6px;
+  font-size: 1.2rem;
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -108,11 +120,15 @@ html,
 .buttons .round {
   grid-column: 3 / 4;
   grid-row: 4;
+  background-color: #ff9448;
+  color: white;
 }
 
 .buttons .round-5 {
   grid-column: 4 / 5;
   grid-row: 4;
+  background-color: #ff9448;
+  color: white;
 }
 
 /* EQUAL BUTTON */
@@ -122,6 +138,7 @@ html,
   background-color: #ff9448;
   color: white;
   font-weight: bold;
+  font-size: 1.8rem;
 }
 
 .buttons .equal:hover {
