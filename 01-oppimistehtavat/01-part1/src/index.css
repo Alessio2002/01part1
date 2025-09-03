@@ -116,6 +116,11 @@ html,
   font-weight: bold;
 }
 
+.buttons .equal:hover {
+  background-color: #ba5d00;
+  color: white;
+}
+
 /* PLUS BUTTON */
 .buttons .plus {
   background-color: #eee;
