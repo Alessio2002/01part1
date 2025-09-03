@@ -214,6 +214,20 @@ const App = () => {
         {/* Extra controls */}
         <h1>Extra controls</h1>
         <div className="extra-buttons">
+          {/* +/- toggle button */}
+          <button
+            className="func"
+            onClick={() => {
+              if (calcInput.startsWith("-")) {
+                setCalcInput(calcInput.slice(1));
+              } else {
+                setCalcInput("-" + calcInput);
+              }
+            }}
+          >
+            +/-
+          </button>
+
           <button className="func" onClick={() => handleCalcClick("(")}>
             (
           </button>
