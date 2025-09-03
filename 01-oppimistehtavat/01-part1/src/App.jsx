@@ -25,7 +25,8 @@ const App = () => {
         .replace(/tan/g, "Math.tan")
         .replace(/log/g, "Math.log")
         .replace(/√/g, "Math.sqrt")
-        .replace(/\^/g, "**");
+        .replace(/\^/g, "**")
+        .replace(/(\d+)%/g, "($1/100)");
 
       const result = eval(expression);
       setCalcInput(String(result));
